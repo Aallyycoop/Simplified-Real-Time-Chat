@@ -1,12 +1,13 @@
-// import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import axios from 'axios';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import {
   Row, Col, Card, Form, Button,
 } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-// import useAuth from '../hooks/index.jsx';
-// import routes from '../routes.js';
+import useAuth from '../hooks/index.jsx';
+import routes from '../routes.js';
 import imagePath from '../assets/login img.jpg';
 
 yup.setLocale({
@@ -21,17 +22,15 @@ const loginSchema = yup.object({
 });
 
 const LoginPage = () => {
-  // const auth = useAuth();
-  /* eslint-disable-next-line */
+  const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  /* eslint-disable-next-line */
-  console.log(inputRef);
-  // const location = useLocation();
-  // const navigation = useNavigate();
-  // useEffect(() => {
-  //   inputRef.current.focus();
-  // }, []);
+  // console.log(inputRef);
+  const location = useLocation();
+  const navigate = useNavigate();
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -39,14 +38,30 @@ const LoginPage = () => {
       password: '',
     },
     validationSchema: loginSchema,
-    // onSubmit: async (values) => {
-    //   setAuthFailed(false);
-    // },
-    onSubmit: (values) => {
-      console.log('values', values);
-      console.log(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      // console.log('values', values);
+      // console.log(JSON.stringify(values, null, 2));
       setAuthFailed(false);
-      formik.setSubmitting(false);
+
+      try {
+        console.log('values', values);
+        const res = await axios.post(routes.loginPath(), values);
+        // console.log('res', res);
+        // console.log('resdata', res.data);
+        localStorage.setItem('userId', JSON.stringify(res.data));
+        // console.log('auth', auth);
+        auth.logIn();
+        const { from } = location.state || { from: { pathname: '/' } };
+        navigate(from);
+      } catch (err) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
   return (
