@@ -25,7 +25,6 @@ const LoginPage = () => {
   const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
-  // console.log(inputRef);
   const location = useLocation();
   const navigate = useNavigate();
   useEffect(() => {
@@ -44,14 +43,9 @@ const LoginPage = () => {
       setAuthFailed(false);
 
       try {
-        console.log('values', values);
         const res = await axios.post(routes.loginPath(), values);
-        console.log('res', res);
-        console.log('resdata', res.data);
-        console.log('localStorage1', localStorage);
 
         localStorage.setItem('userId', JSON.stringify(res.data));
-        console.log('localStorage2', localStorage);
 
         console.log('auth', auth);
         auth.logIn();

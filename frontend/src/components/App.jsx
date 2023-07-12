@@ -10,16 +10,27 @@ import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  console.log('localStorage', localStorage);
+  const user = JSON.parse(localStorage.getItem('userId'));
+
+  const [loggedIn, setLoggedIn] = useState(user && user.token);
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);
   };
+
+  const getToken = () => {
+    if (loggedIn) {
+      return user.token;
+    }
+    return {};
+  };
+
   return (
     /* eslint-disable-next-line */
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{ loggedIn, logIn, logOut, getToken }}>
       {children}
     </AuthContext.Provider>
   );
@@ -34,16 +45,6 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
-// const AuthButton = () => {
-//   const auth = useAuth();
-//   const location = useLocation();
-//   return (
-//     auth.loggedIn
-//       ? <Button onClick={auth.logOut}>Log Out</Button>
-//       : <Button as={Link} to="/login" state={{ from: location }}>Log In</Button>
-//   );
-// };
-
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
@@ -52,7 +53,6 @@ const App = () => (
           <div className="container">
             <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
           </div>
-          {/* <AuthButton /> */}
         </Navbar>
         <Routes>
           <Route path="*" element={<NotFoundPage />} />
