@@ -46,15 +46,20 @@ const LoginPage = () => {
       try {
         console.log('values', values);
         const res = await axios.post(routes.loginPath(), values);
-        // console.log('res', res);
-        // console.log('resdata', res.data);
+        console.log('res', res);
+        console.log('resdata', res.data);
+        console.log('localStorage1', localStorage);
+
         localStorage.setItem('userId', JSON.stringify(res.data));
-        // console.log('auth', auth);
+        console.log('localStorage2', localStorage);
+
+        console.log('auth', auth);
         auth.logIn();
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
+        console.log('err.response', err.response);
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
