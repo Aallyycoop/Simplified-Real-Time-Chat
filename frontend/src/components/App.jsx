@@ -10,7 +10,7 @@ import AuthContext from '../contexts/index.jsx';
 import useAuth from '../hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  console.log('localStorage', localStorage);
+  // console.log('localStorage', localStorage);
   const user = JSON.parse(localStorage.getItem('userId'));
 
   const [loggedIn, setLoggedIn] = useState(user && user.token);

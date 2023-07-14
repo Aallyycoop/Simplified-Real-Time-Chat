@@ -47,13 +47,13 @@ const LoginPage = () => {
 
         localStorage.setItem('userId', JSON.stringify(res.data));
 
-        console.log('auth', auth);
+        // console.log('auth', auth);
         auth.logIn();
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
-        console.log('err.response', err.response);
+        // console.log('err.response', err.response);
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();

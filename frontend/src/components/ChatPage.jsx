@@ -1,12 +1,15 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import useAuth from '../hooks/index.jsx';
-import { fetchData } from '../slices/dataSlice';
+import fetchData from '../slices/fetchData.js';
+
+import Channels from './Channels.jsx';
+import Messages from './Messages.jsx';
 
 const ChatPage = () => {
   const auth = useAuth();
-  console.log('auth', auth);
+  // console.log('auth', auth);
 
   const dispatch = useDispatch();
 
@@ -16,11 +19,19 @@ const ChatPage = () => {
     dispatch(fetchData(token));
   }, [dispatch, token]);
 
-  const data = JSON.stringify(useSelector((state) => state.data), null, 2);
+  // const channels = JSON.stringify(useSelector((state) => state.channels), null, 2);
+  // const messages = JSON.stringify(useSelector((state) => state.messages), null, 2);
 
-  console.log('data', data);
+  // console.log('channels', channels);
+  // console.log('messages', messages);
+
   return (
-    data
+    <div className="container h-100 my-4 overflow-hidden rounded shadow">
+      <div className="row h-100 bg-white flex-md-row">
+        <Channels />
+        <Messages />
+      </div>
+    </div>
   );
 };
 
