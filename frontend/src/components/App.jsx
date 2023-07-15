@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   BrowserRouter, Routes, Route, Navigate, useLocation, Link,
 } from 'react-router-dom';
-import { Navbar } from 'react-bootstrap';
+import { Navbar, Button } from 'react-bootstrap';
 import ChatPage from './ChatPage';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
@@ -45,6 +45,15 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
+const LogOutButton = () => {
+  const auth = useAuth();
+  return (
+    auth.loggedIn
+      ? <Button onClick={auth.logOut}>Выйти</Button>
+      : null
+  );
+};
+
 const App = () => (
   <AuthProvider>
     <BrowserRouter>
@@ -52,6 +61,7 @@ const App = () => (
         <Navbar className="shadow-sm" bg="white" expand="lg">
           <div className="container">
             <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+            <LogOutButton />
           </div>
         </Navbar>
         <Routes>
