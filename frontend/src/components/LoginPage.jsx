@@ -6,7 +6,7 @@ import {
 } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import useAuth from '../hooks/index.jsx';
+import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 import imagePath from '../assets/login img.jpg';
 
@@ -39,7 +39,6 @@ const LoginPage = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       // console.log('values', values);
-      // console.log(JSON.stringify(values, null, 2));
       setAuthFailed(false);
 
       try {
@@ -47,7 +46,6 @@ const LoginPage = () => {
 
         localStorage.setItem('userId', JSON.stringify(res.data));
 
-        // console.log('auth', auth);
         auth.logIn();
         const { from } = location.state || { from: { pathname: '/' } };
         navigate(from);
@@ -102,7 +100,7 @@ const LoginPage = () => {
                       required
                     />
                     <Form.Label htmlFor="password">Пароль</Form.Label>
-                    <Form.Control.Feedback type="invalid" className="invalid-tooltip">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid" className="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
                   </Form.Group>
                   <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
                 </fieldset>

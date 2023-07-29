@@ -3,23 +3,37 @@ import { useFormik } from 'formik';
 import {
   Form, Button,
 } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
+import { useSocket, useAuth } from '../hooks';
 
 const MessageForm = () => {
+  const socketApi = useSocket();
+  const { user } = useAuth();
+
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
 
+  const { currentChannelId } = useSelector((state) => state.channels);
+
   const formik = useFormik({
     initialValues: {
       message: '',
     },
-    onSubmit: ({ message }) => {
-      console.log(message);
-      formik.resetForm();
+    onSubmit: async ({ message }) => {
+      try {
+        await socketApi.sendMessage({
+          message,
+          channelId: currentChannelId,
+          user: user.username,
+        });
+        formik.resetForm();
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
-  console.log(formik.values);
 
   return (
     <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>

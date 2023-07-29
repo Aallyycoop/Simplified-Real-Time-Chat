@@ -6,9 +6,13 @@ import MessageForm from './MessageForm';
 
 const Messages = () => {
   const { messages } = useSelector((state) => state.messages);
+  console.log('messages', messages);
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   const currentChannel = channels.find(({ id }) => id === currentChannelId);
   const currentChannelName = currentChannel ? currentChannel.name : 'general';
+
+  const messagesOfCurrentChannel = messages
+    .filter((message) => message.channelId === currentChannel.id);
 
   return (
     <Col className="p-0 h-100">
@@ -17,11 +21,16 @@ const Messages = () => {
           <p className="m-0">
             <b>{`# ${currentChannelName}`}</b>
           </p>
-          <span className="text-muted">{`${messages.length} сообщений`}</span>
+          <span className="text-muted">{`${messagesOfCurrentChannel.length} сообщений`}</span>
         </div>
         <div id="messages-box" className="chat-messages overflow-auto px-5 ">
-          {messages.map((message) => (
-            <div key={message} className="text-break mb-2">{message}</div>
+          {messagesOfCurrentChannel.map(({ id, user, message }) => (
+            <div key={id} className="text-break mb-2">
+              <b>{user}</b>
+              :
+              {' '}
+              {message}
+            </div>
           ))}
         </div>
         <div className="mt-auto px-5 py-3">
