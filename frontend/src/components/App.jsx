@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState, useEffect, useCallback, useMemo,
+} from 'react';
 import {
   BrowserRouter, Routes, Route, Navigate, useLocation, Link,
 } from 'react-router-dom';
@@ -10,7 +12,7 @@ import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
 import { AuthContext, SocketContext } from '../contexts/index.jsx';
 import { useAuth } from '../hooks/index.jsx';
-import { actions } from '../slices/messagesSlice';
+import { actions as messagesActions } from '../slices/messagesSlice';
 
 const AuthProvider = ({ children }) => {
   // console.log('localStorage', localStorage);
@@ -63,7 +65,7 @@ const App = () => {
   const socket = io('ws://localhost:3000');
   const dispatch = useDispatch();
 
-  const { addMessage } = actions;
+  const { addMessage } = messagesActions;
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
@@ -75,10 +77,17 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* eslint-disable-next-line */
-  const socketApi = {
-    sendMessage: (...args) => socket.emit('newMessage', ...args),
-  };
+  const sendMessage = useCallback((...args) => new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('newMessage', ...args, (err) => {
+      /* eslint-disable-next-line */
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  }), [socket]);
+
+  const socketApi = useMemo(() => ({ sendMessage }), [sendMessage]);
 
   return (
     <SocketContext.Provider value={socketApi}>
