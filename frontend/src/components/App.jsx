@@ -13,6 +13,7 @@ import NotFoundPage from './NotFoundPage';
 import { AuthContext, SocketContext } from '../contexts/index.jsx';
 import { useAuth } from '../hooks/index.jsx';
 import { actions as messagesActions } from '../slices/messagesSlice';
+import { actions as channelsActions } from '../slices/channelsSlice';
 
 const AuthProvider = ({ children }) => {
   // console.log('localStorage', localStorage);
@@ -43,8 +44,6 @@ const AuthProvider = ({ children }) => {
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
-  console.log('auth', auth);
-
   const location = useLocation();
 
   return (
@@ -66,6 +65,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const { addMessage } = messagesActions;
+  const { addChannel } = channelsActions;
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
@@ -77,6 +77,15 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    socket.on('newChannel', (channel) => {
+      dispatch(addChannel(channel));
+    });
+    return () => {
+      socket.off('newChannel');
+    };
+  });
+
   const sendMessage = useCallback((...args) => new Promise((resolve, reject) => {
     socket.timeout(5000).emit('newMessage', ...args, (err) => {
       /* eslint-disable-next-line */
@@ -87,7 +96,18 @@ const App = () => {
     });
   }), [socket]);
 
-  const socketApi = useMemo(() => ({ sendMessage }), [sendMessage]);
+  const newChannel = useCallback((...args) => new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('newChannel', ...args, (err, response) => {
+      /* eslint-disable-next-line */
+      if (err) {
+        reject(err);
+      }
+      console.log('response', response);
+      resolve(response);
+    });
+  }), [socket]);
+
+  const socketApi = useMemo(() => ({ sendMessage, newChannel }), [sendMessage, newChannel]);
 
   return (
     <SocketContext.Provider value={socketApi}>

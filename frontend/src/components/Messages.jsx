@@ -6,13 +6,13 @@ import MessageForm from './MessageForm';
 
 const Messages = () => {
   const { messages } = useSelector((state) => state.messages);
-  console.log('messages', messages);
   const { channels, currentChannelId } = useSelector((state) => state.channels);
+
   const currentChannel = channels.find(({ id }) => id === currentChannelId);
   const currentChannelName = currentChannel ? currentChannel.name : 'general';
 
   const messagesOfCurrentChannel = messages
-    .filter((message) => message.channelId === currentChannel.id);
+    .filter((message) => message.channelId === currentChannelId);
 
   return (
     <Col className="p-0 h-100">
