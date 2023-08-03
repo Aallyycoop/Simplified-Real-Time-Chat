@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import {
   Col,
 } from 'react-bootstrap';
+import React, { useEffect, useRef } from 'react';
 import MessageForm from './MessageForm';
 
 const Messages = () => {
@@ -14,6 +15,17 @@ const Messages = () => {
   const messagesOfCurrentChannel = messages
     .filter((message) => message.channelId === currentChannelId);
 
+  const messageBox = useRef(null);
+
+  const scrollToBottom = () => {
+    const { scrollHeight } = messageBox.current;
+    const height = messageBox.current.clientHeight;
+    const maxScrollTop = scrollHeight - height;
+    messageBox.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  };
+
+  useEffect(() => scrollToBottom(), [messagesOfCurrentChannel]);
+
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
@@ -23,7 +35,7 @@ const Messages = () => {
           </p>
           <span className="text-muted">{`${messagesOfCurrentChannel.length} сообщений`}</span>
         </div>
-        <div id="messages-box" className="chat-messages overflow-auto px-5 ">
+        <div id="messages-box" ref={messageBox} className="chat-messages overflow-auto px-5 ">
           {messagesOfCurrentChannel.map(({ id, user, message }) => (
             <div key={id} className="text-break mb-2">
               <b>{user}</b>
