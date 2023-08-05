@@ -10,12 +10,12 @@ const MessageForm = () => {
   const socketApi = useSocket();
   const { user } = useAuth();
 
+  const { currentChannelId } = useSelector((state) => state.channels);
+
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
-  }, []);
-
-  const { currentChannelId } = useSelector((state) => state.channels);
+  }, [currentChannelId]);
 
   const formik = useFormik({
     initialValues: {
