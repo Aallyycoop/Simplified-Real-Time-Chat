@@ -37,7 +37,8 @@ const Add = () => {
         console.error(error);
       }
     },
-
+    validateOnBlur: false,
+    validateOnChange: false,
   });
 
   const inputRef = useRef();

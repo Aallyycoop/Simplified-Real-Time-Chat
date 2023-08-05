@@ -1,4 +1,4 @@
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import fetchData from './fetchData';
 
 const initialState = {
@@ -20,14 +20,10 @@ const channelsSlice = createSlice({
     renameChannel: (state, { payload }) => {
       const renamingChannel = state.channels.find((channel) => channel.id === payload.id);
       renamingChannel.name = payload.name;
-
-      // console.log('currentChan', current(state, payload));
     },
-
-    // renameChannel: (state, { payload: { id, name } }) => {
-    //   const channel = state.channels.find((ch) => (ch.id === id));
-    //   channel.name = name;
-    // },
+    removeChannel: (state, { payload }) => {
+      state.channels = state.channels.filter((channel) => channel.id !== payload.id);
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -35,7 +31,7 @@ const channelsSlice = createSlice({
         state.channels = action.payload.channels;
         state.currentChannelId = action.payload.currentChannelId;
 
-        console.log('currentChannels', current(state));
+        // console.log('currentChannels', current(state));
       });
   },
 });

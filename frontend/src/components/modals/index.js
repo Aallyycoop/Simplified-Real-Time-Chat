@@ -1,10 +1,10 @@
 import Add from './Add.jsx';
-// import Remove from './Remove.jsx';
+import Remove from './Remove.jsx';
 import Rename from './Rename.jsx';
 
 const modals = {
   adding: Add,
-  // removing: Remove,
+  removing: Remove,
   renaming: Rename,
 };
 

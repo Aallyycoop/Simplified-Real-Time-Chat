@@ -26,7 +26,11 @@ const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, disp
       <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : ''} id="react-aria5875383625-1" />
 
       <Dropdown.Menu>
-        <Dropdown.Item href="#/action-1">Удалить</Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => { dispatch(showModal({ type: 'removing' })); dispatch(setChannelId({ id })); }}
+        >
+          Удалить
+        </Dropdown.Item>
         <Dropdown.Item
           onClick={() => { dispatch(showModal({ type: 'renaming' })); dispatch(setChannelId({ id })); }}
         >
@@ -42,6 +46,7 @@ const Channels = () => {
 
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   console.log('channels', channels);
+  console.log('currentChannelId', currentChannelId);
 
   const dispatch = useDispatch();
   const handleSetChannel = (id) => dispatch(setCurrentChannel(id));

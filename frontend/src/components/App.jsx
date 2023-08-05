@@ -65,7 +65,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const { addMessage } = messagesActions;
-  const { addChannel, renameChannel } = channelsActions;
+  const { addChannel, renameChannel, removeChannel } = channelsActions;
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
@@ -92,6 +92,15 @@ const App = () => {
     });
     return () => {
       socket.off('renameChannel');
+    };
+  });
+
+  useEffect(() => {
+    socket.on('removeChannel', (channelId) => {
+      dispatch(removeChannel(channelId));
+    });
+    return () => {
+      socket.off('removeChannel');
     };
   });
 
@@ -122,13 +131,27 @@ const App = () => {
       if (err) {
         reject(err);
       }
-      console.log('responseRename', response);
+      resolve(response);
+    });
+  }), [socket]);
+
+  const removeChan = useCallback((...args) => new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('removeChannel', ...args, (err, response) => {
+      /* eslint-disable-next-line */
+      if (err) {
+        reject(err);
+      }
       resolve(response);
     });
   }), [socket]);
 
   const socketApi = useMemo(() => (
-    { sendMessage, newChannel, renameChan }), [sendMessage, newChannel, renameChan]);
+    {
+      sendMessage,
+      newChannel,
+      renameChan,
+      removeChan,
+    }), [sendMessage, newChannel, renameChan, removeChan]);
 
   return (
     <SocketContext.Provider value={socketApi}>
