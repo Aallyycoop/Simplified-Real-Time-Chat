@@ -5,14 +5,16 @@ import { Provider } from 'react-redux';
 import store from './slices/index.js';
 
 import './index.css';
-import App from './components/App';
+import init from './init';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-// eslint-disable-next-line functional/no-expression-statements
-console.log('store', store);
-console.log('store.getstate', store.getState());
-root.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-);
+const app = async () => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  const initComponent = await init();
+  root.render(
+    <Provider store={store}>
+      {initComponent}
+    </Provider>,
+  );
+};
+
+app();

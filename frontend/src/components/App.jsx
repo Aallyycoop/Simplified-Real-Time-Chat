@@ -4,6 +4,7 @@ import React, {
 import {
   BrowserRouter, Routes, Route, Navigate, useLocation, Link,
 } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Navbar, Button } from 'react-bootstrap';
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
@@ -53,9 +54,10 @@ const PrivateRoute = ({ children }) => {
 
 const LogOutButton = () => {
   const auth = useAuth();
+  const { t } = useTranslation();
   return (
     auth.loggedIn
-      ? <Button onClick={auth.logOut}>Выйти</Button>
+      ? <Button onClick={auth.logOut}>{t('loginPage.logout')}</Button>
       : null
   );
 };
@@ -63,6 +65,7 @@ const LogOutButton = () => {
 const App = () => {
   const socket = io('ws://localhost:3000');
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { addMessage } = messagesActions;
   const { addChannel, renameChannel, removeChannel } = channelsActions;
@@ -160,7 +163,7 @@ const App = () => {
           <div className="d-flex flex-column h-100">
             <Navbar className="shadow-sm" bg="white" expand="lg">
               <div className="container">
-                <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+                <Navbar.Brand as={Link} to="/">{t('hexletChat')}</Navbar.Brand>
                 <LogOutButton />
               </div>
             </Navbar>

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import React, { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import {
@@ -9,12 +10,6 @@ import * as yup from 'yup';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 import imagePath from '../assets/login img.jpg';
-
-yup.setLocale({
-  mixed: {
-    required: 'Заполните это поле',
-  },
-});
 
 const loginSchema = yup.object({
   username: yup.string().required(),
@@ -27,6 +22,7 @@ const LoginPage = () => {
   const inputRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -38,7 +34,6 @@ const LoginPage = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      // console.log('values', values);
       setAuthFailed(false);
 
       try {
@@ -71,13 +66,13 @@ const LoginPage = () => {
                 <img src={imagePath} className="rounded-circle" alt="Войти" />
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('loginPage.login')}</h1>
                 <fieldset disabled={formik.isSubmitting}>
                   <Form.Group className="mb-3 form-floating">
                     <Form.Control
                       onChange={formik.handleChange}
                       value={formik.values.username}
-                      placeholder="Ваш ник"
+                      placeholder={t('loginPage.nickname')}
                       name="username"
                       id="username"
                       autoComplete="username"
@@ -85,22 +80,22 @@ const LoginPage = () => {
                       required
                       ref={inputRef}
                     />
-                    <Form.Label htmlFor="username">Ваш ник</Form.Label>
+                    <Form.Label htmlFor="username">{t('loginPage.nickname')}</Form.Label>
                   </Form.Group>
                   <Form.Group className="mb-3 form-floating">
                     <Form.Control
                       type="password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
-                      placeholder="Пароль"
+                      placeholder="{t('loginPage.password')}"
                       name="password"
                       id="password"
                       autoComplete="current-password"
                       isInvalid={authFailed}
                       required
                     />
-                    <Form.Label htmlFor="password">Пароль</Form.Label>
-                    <Form.Control.Feedback type="invalid" className="invalid">Неверные имя пользователя или пароль</Form.Control.Feedback>
+                    <Form.Label htmlFor="password">{t('loginPage.password')}</Form.Label>
+                    <Form.Control.Feedback type="invalid" className="invalid">{t('loginPage.unsuccessLogin')}</Form.Control.Feedback>
                   </Form.Group>
                   <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
                 </fieldset>
@@ -108,9 +103,9 @@ const LoginPage = () => {
             </Card.Body>
             <Card.Footer className="p-4">
               <div className="text-center">
-                <span>Нет аккаунта?</span>
+                <span>{t('loginPage.noAcc')}</span>
                 {' '}
-                <a href="/signup">Регистрация</a>
+                <a href="/signup">{t('loginPage.registration')}</a>
               </div>
             </Card.Footer>
           </Card>

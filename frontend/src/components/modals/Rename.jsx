@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
 import { channelNameValidation } from './Add';
@@ -9,6 +10,7 @@ import { channelNameValidation } from './Add';
 const Rename = () => {
   const socketApi = useSocket();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { channels } = useSelector((state) => state.channels);
   const { channelId } = useSelector((state) => state.modals);
@@ -20,7 +22,7 @@ const Rename = () => {
 
   const formik = useFormik({
     initialValues: { name: renamingChannel.name },
-    validationSchema: channelNameValidation(channelsNames),
+    validationSchema: channelNameValidation(channelsNames, t),
     onSubmit: async (values) => {
       try {
         await socketApi.renameChan({ id: channelId, name: values.name });
@@ -42,7 +44,7 @@ const Rename = () => {
   return (
     <Modal show centered onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('channels.renameChannel')}</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -59,11 +61,11 @@ const Rename = () => {
               isInvalid={(formik.errors.name && formik.touched.name)}
             />
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
-            <Form.Label htmlFor="name" hidden>Имя канала</Form.Label>
+            <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
           </Form.Group>
           <div className="d-flex justify-content-end">
-            <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">Отменить</Button>
-            <Button type="submit" variant="primary">Отправить</Button>
+            <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
+            <Button type="submit" variant="primary">{t('send')}</Button>
           </div>
         </Form>
       </Modal.Body>

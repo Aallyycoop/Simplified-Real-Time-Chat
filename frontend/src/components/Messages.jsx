@@ -3,9 +3,11 @@ import {
   Col,
 } from 'react-bootstrap';
 import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
 
 const Messages = () => {
+  const { t } = useTranslation();
   const { messages } = useSelector((state) => state.messages);
   const { channels, currentChannelId } = useSelector((state) => state.channels);
 
@@ -33,7 +35,7 @@ const Messages = () => {
           <p className="m-0">
             <b>{`# ${currentChannelName}`}</b>
           </p>
-          <span className="text-muted">{`${messagesOfCurrentChannel.length} сообщений`}</span>
+          <span className="text-muted">{t('messages.message', { count: messagesOfCurrentChannel.length })}</span>
         </div>
         <div id="messages-box" ref={messageBox} className="chat-messages overflow-auto px-5 ">
           {messagesOfCurrentChannel.map(({ id, user, message }) => (

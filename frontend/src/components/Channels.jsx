@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   Col, Button, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as modalActions } from '../slices/modalSlices';
 import Modal from './modals/Modal.jsx';
@@ -13,7 +15,7 @@ const UnchangedChannelButton = (name, id, currentChannelId, handleSetChannel) =>
   </Button>
 );
 
-const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, dispatch) => {
+const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, dispatch, t) => {
   const { showModal, setChannelId } = modalActions;
 
   return (
@@ -29,12 +31,12 @@ const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, disp
         <Dropdown.Item
           onClick={() => { dispatch(showModal({ type: 'removing' })); dispatch(setChannelId({ id })); }}
         >
-          Удалить
+          {t('channels.delete')}
         </Dropdown.Item>
         <Dropdown.Item
           onClick={() => { dispatch(showModal({ type: 'renaming' })); dispatch(setChannelId({ id })); }}
         >
-          Переименовать
+          {t('channels.rename')}
         </Dropdown.Item>
       </Dropdown.Menu>
     </Dropdown>
@@ -43,6 +45,7 @@ const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, disp
 
 const Channels = () => {
   const { setCurrentChannel } = channelsActions;
+  const { t } = useTranslation();
 
   const { channels, currentChannelId } = useSelector((state) => state.channels);
   console.log('channels', channels);
@@ -54,7 +57,7 @@ const Channels = () => {
   return (
     <Col className="col-4 col-md-2 border-end px-0 bg-light flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>Каналы</b>
+        <b>{t('channels.channels')}</b>
         <Modal />
       </div>
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
@@ -62,7 +65,7 @@ const Channels = () => {
           <li key={id} className="nav-item w-100">
             {!removable && UnchangedChannelButton(name, id, currentChannelId, handleSetChannel)}
             {removable
-              && ChangedChannelButton(name, id, currentChannelId, handleSetChannel, dispatch)}
+              && ChangedChannelButton(name, id, currentChannelId, handleSetChannel, dispatch, t)}
           </li>
         ))}
       </ul>
