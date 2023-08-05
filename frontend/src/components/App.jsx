@@ -65,7 +65,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const { addMessage } = messagesActions;
-  const { addChannel } = channelsActions;
+  const { addChannel, renameChannel } = channelsActions;
 
   useEffect(() => {
     socket.on('newMessage', (message) => {
@@ -86,6 +86,15 @@ const App = () => {
     };
   });
 
+  useEffect(() => {
+    socket.on('renameChannel', (channel) => {
+      dispatch(renameChannel(channel));
+    });
+    return () => {
+      socket.off('renameChannel');
+    };
+  });
+
   const sendMessage = useCallback((...args) => new Promise((resolve, reject) => {
     socket.timeout(5000).emit('newMessage', ...args, (err) => {
       /* eslint-disable-next-line */
@@ -102,12 +111,24 @@ const App = () => {
       if (err) {
         reject(err);
       }
-      console.log('response', response);
+      // console.log('response', response);
       resolve(response);
     });
   }), [socket]);
 
-  const socketApi = useMemo(() => ({ sendMessage, newChannel }), [sendMessage, newChannel]);
+  const renameChan = useCallback((...args) => new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('renameChannel', ...args, (err, response) => {
+      /* eslint-disable-next-line */
+      if (err) {
+        reject(err);
+      }
+      console.log('responseRename', response);
+      resolve(response);
+    });
+  }), [socket]);
+
+  const socketApi = useMemo(() => (
+    { sendMessage, newChannel, renameChan }), [sendMessage, newChannel, renameChan]);
 
   return (
     <SocketContext.Provider value={socketApi}>

@@ -2,56 +2,51 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
-import * as yup from 'yup';
-import { actions as channelsActions } from '../../slices/channelsSlice';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
+import { channelNameValidation } from './Add';
 
-export const channelNameValidation = (names) => yup.object().shape({
-  name: yup.string().trim()
-    .required('Обязательное поле')
-    .notOneOf(names, 'Должно быть уникальным'),
-});
-
-const Add = () => {
+const Rename = () => {
   const socketApi = useSocket();
   const dispatch = useDispatch();
+
   const { channels } = useSelector((state) => state.channels);
+  const { channelId } = useSelector((state) => state.modals);
 
   const channelsNames = channels.map(({ name }) => name);
-  console.log('channelsNames', channelsNames);
+  const renamingChannel = channels.find((channel) => channel.id === channelId);
 
-  const { setCurrentChannel } = channelsActions;
   const { hideModal } = modalActions;
 
   const formik = useFormik({
-    initialValues: { name: '' },
+    initialValues: { name: renamingChannel.name },
     validationSchema: channelNameValidation(channelsNames),
     onSubmit: async (values) => {
       try {
-        const response = await socketApi.newChannel({ name: values.name });
-        dispatch(setCurrentChannel(response.data.id));
+        await socketApi.renameChan({ id: channelId, name: values.name });
         dispatch(hideModal());
         formik.resetForm();
       } catch (error) {
         console.error(error);
       }
     },
-
   });
 
-  const inputRef = useRef();
+  // ? не срабатывает селект на содержимом внутри инпута
+  // при открытии модального окна переименовать
+  const inputRef = useRef(null);
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   return (
     <Modal show centered onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>Переименовать канал</Modal.Title>
       </Modal.Header>
+
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Control
               required
@@ -59,7 +54,6 @@ const Add = () => {
               onChange={formik.handleChange}
               value={formik.values.name}
               name="name"
-              placeholder="Имя канала"
               id="name"
               className="mb-2"
               isInvalid={(formik.errors.name && formik.touched.name)}
@@ -71,10 +65,10 @@ const Add = () => {
             <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">Отменить</Button>
             <Button type="submit" variant="primary">Отправить</Button>
           </div>
-        </form>
+        </Form>
       </Modal.Body>
     </Modal>
   );
 };
 
-export default Add;
+export default Rename;

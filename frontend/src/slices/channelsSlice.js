@@ -17,6 +17,17 @@ const channelsSlice = createSlice({
       state.channels.push(payload);
       state.currentChannelId = payload.id;
     },
+    renameChannel: (state, { payload }) => {
+      const renamingChannel = state.channels.find((channel) => channel.id === payload.id);
+      renamingChannel.name = payload.name;
+
+      // console.log('currentChan', current(state, payload));
+    },
+
+    // renameChannel: (state, { payload: { id, name } }) => {
+    //   const channel = state.channels.find((ch) => (ch.id === id));
+    //   channel.name = name;
+    // },
   },
   extraReducers: (builder) => {
     builder
