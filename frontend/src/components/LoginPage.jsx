@@ -63,7 +63,7 @@ const LoginPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
               <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={imagePath} className="rounded-circle" alt="Войти" />
+                <img src={imagePath} className="rounded-circle" alt={t('loginPage.login')} />
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('loginPage.login')}</h1>
@@ -87,7 +87,7 @@ const LoginPage = () => {
                       type="password"
                       onChange={formik.handleChange}
                       value={formik.values.password}
-                      placeholder="{t('loginPage.password')}"
+                      placeholder={t('loginPage.password')}
                       name="password"
                       id="password"
                       autoComplete="current-password"
@@ -97,7 +97,7 @@ const LoginPage = () => {
                     <Form.Label htmlFor="password">{t('loginPage.password')}</Form.Label>
                     <Form.Control.Feedback type="invalid" className="invalid">{t('loginPage.unsuccessLogin')}</Form.Control.Feedback>
                   </Form.Group>
-                  <Button type="submit" variant="outline-primary" className="w-100 mb-3">Войти</Button>
+                  <Button type="submit" variant="outline-primary" className="w-100 mb-3">{t('loginPage.login')}</Button>
                 </fieldset>
               </Form>
             </Card.Body>

@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux';
 import ChatPage from './ChatPage';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
+import SignUpPage from './SignUpPage';
 import { AuthContext, SocketContext } from '../contexts/index.jsx';
 import { useAuth } from '../hooks/index.jsx';
 import { actions as messagesActions } from '../slices/messagesSlice';
@@ -178,6 +179,7 @@ const App = () => {
                 )}
               />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
             </Routes>
           </div>
         </BrowserRouter>
