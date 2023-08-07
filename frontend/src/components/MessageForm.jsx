@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import filter from 'leo-profanity';
 import { useSocket, useAuth } from '../hooks';
 
 const MessageForm = () => {
@@ -25,8 +26,12 @@ const MessageForm = () => {
     },
     onSubmit: async ({ message }) => {
       try {
+        const russianProfanity = filter.getDictionary('ru');
+        filter.add(russianProfanity);
+        const preparedMessage = filter.clean(message.trim());
+
         await socketApi.sendMessage({
-          message,
+          message: preparedMessage,
           channelId: currentChannelId,
           user: user.username,
         });
