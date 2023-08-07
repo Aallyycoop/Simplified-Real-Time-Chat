@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { Navbar, Button } from 'react-bootstrap';
 import { io } from 'socket.io-client';
 import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import ChatPage from './ChatPage';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
@@ -181,6 +182,18 @@ const App = () => {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignUpPage />} />
             </Routes>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
           </div>
         </BrowserRouter>
       </AuthProvider>

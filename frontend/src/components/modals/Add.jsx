@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import * as yup from 'yup';
+import { toast } from 'react-toastify';
 import { actions as channelsActions } from '../../slices/channelsSlice';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
@@ -34,6 +35,7 @@ const Add = () => {
         const response = await socketApi.newChannel({ name: values.name });
         dispatch(setCurrentChannel(response.data.id));
         dispatch(hideModal());
+        toast.success(t('toast.channelCreate'));
         formik.resetForm();
       } catch (error) {
         console.error(error);
@@ -54,27 +56,29 @@ const Add = () => {
         <Modal.Title>{t('channels.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={formik.handleSubmit}>
-          <Form.Group>
-            <Form.Control
-              required
-              ref={inputRef}
-              onChange={formik.handleChange}
-              value={formik.values.name}
-              name="name"
-              placeholder={t('channels.name')}
-              id="name"
-              className="mb-2"
-              isInvalid={(formik.errors.name && formik.touched.name)}
-            />
-            <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
-            <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
-          </Form.Group>
-          <div className="d-flex justify-content-end">
-            <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
-            <Button type="submit" variant="primary">{t('send')}</Button>
-          </div>
-        </form>
+        <Form onSubmit={formik.handleSubmit}>
+          <fieldset disabled={formik.isSubmitting}>
+            <Form.Group>
+              <Form.Control
+                required
+                ref={inputRef}
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                name="name"
+                placeholder={t('channels.name')}
+                id="name"
+                className="mb-2"
+                isInvalid={(formik.errors.name && formik.touched.name)}
+              />
+              <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
+              <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
+            </Form.Group>
+            <div className="d-flex justify-content-end">
+              <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
+              <Button type="submit" variant="primary">{t('send')}</Button>
+            </div>
+          </fieldset>
+        </Form>
       </Modal.Body>
     </Modal>
   );

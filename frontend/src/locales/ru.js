@@ -46,6 +46,12 @@ export default {
       transition: 'Но вы можете перейти',
       toMainPage: 'на главную страницу',
     },
+    toast: {
+      connectionError: 'Ошибка соединения',
+      channelCreate: 'Канал создан',
+      channelRename: 'Канал переименован',
+      channelDelete: 'Канал удален',
+    },
     send: 'Отправить',
     cancel: 'Отменить',
     required: 'Обязательное поле',

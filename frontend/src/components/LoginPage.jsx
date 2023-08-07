@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
+import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
 import imagePath from '../assets/login img.jpg';
@@ -33,11 +34,14 @@ const LoginPage = () => {
       password: '',
     },
     validationSchema: loginSchema,
-    onSubmit: async (values) => {
+    /* eslint-disable-next-line */
+    onSubmit: async ({ username, password }) => {
       setAuthFailed(false);
-
       try {
-        const res = await axios.post(routes.loginPath(), values);
+        const res = await axios.post(
+          routes.loginPath(),
+          { username: username.toLowerCase(), password },
+        );
 
         localStorage.setItem('userId', JSON.stringify(res.data));
 
@@ -46,16 +50,21 @@ const LoginPage = () => {
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
-        // console.log('err.response', err.response);
+
+        /* eslint-disable-next-line */
+        if (err.message === 'Network Error') {
+          toast.error(t('toast.connectionError'));
+          console.error('error', err);
+        }
+        /* eslint-disable-next-line */
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
-          return;
         }
-        throw err;
       }
     },
   });
+
   return (
     <div className="container-fluid h-100">
       <Row className="justify-content-center align-content-center h-100">
