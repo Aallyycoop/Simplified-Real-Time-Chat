@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
 import { channelNameValidation } from './Add';
@@ -21,12 +22,16 @@ const Rename = () => {
 
   const { hideModal } = modalActions;
 
+  const russianProfanity = filter.getDictionary('ru');
+  filter.add(russianProfanity);
+
   const formik = useFormik({
     initialValues: { name: renamingChannel.name },
     validationSchema: channelNameValidation(channelsNames, t),
     onSubmit: async (values) => {
       try {
-        await socketApi.renameChan({ id: channelId, name: values.name });
+        const preparedName = filter.clean(values.name.trim());
+        await socketApi.renameChan({ id: channelId, name: preparedName });
         dispatch(hideModal());
         toast.success(t('toast.channelRename'));
         formik.resetForm();
@@ -34,6 +39,7 @@ const Rename = () => {
         console.error(error);
       }
     },
+    validateOnChange: false,
   });
 
   // ? не срабатывает селект на содержимом внутри инпута
@@ -57,7 +63,7 @@ const Rename = () => {
                 required
                 ref={inputRef}
                 onChange={formik.handleChange}
-                value={formik.values.name}
+                value={formik.errors.name ? filter.clean(formik.values.name) : formik.values.name}
                 name="name"
                 id="name"
                 className="mb-2"
