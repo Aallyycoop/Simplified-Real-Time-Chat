@@ -6,7 +6,12 @@ import {
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import filter from 'leo-profanity';
+import * as yup from 'yup';
 import { useSocket, useAuth } from '../hooks';
+
+const messageSchema = yup.object().shape({
+  message: yup.string().trim().min(1),
+});
 
 const MessageForm = () => {
   const socketApi = useSocket();
@@ -24,11 +29,12 @@ const MessageForm = () => {
     initialValues: {
       message: '',
     },
+    validationSchema: messageSchema,
     onSubmit: async ({ message }) => {
       try {
         const russianProfanity = filter.getDictionary('ru');
         filter.add(russianProfanity);
-        const preparedMessage = filter.clean(message.trim());
+        const preparedMessage = filter.clean(message);
 
         await socketApi.sendMessage({
           message: preparedMessage,
