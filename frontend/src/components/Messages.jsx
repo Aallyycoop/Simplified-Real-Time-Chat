@@ -5,7 +5,7 @@ import {
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
-import './messagesStyle.css';
+// import './messagesStyle.css';
 
 const Messages = () => {
   const { t } = useTranslation();
