@@ -44,8 +44,7 @@ const Messages = () => {
           {messagesOfCurrentChannel.map(({ id, user, message }) => (
             <div key={id} className={username === user ? 'user-message text-break mb-2' : 'message text-break mb-2'}>
               <b>{user}</b>
-              :
-              {' '}
+              {': '}
               {message}
             </div>
           ))}
