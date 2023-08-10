@@ -9,7 +9,7 @@ import { actions as modalActions } from '../slices/modalSlices';
 import Modal from './modals/Modal.jsx';
 
 const UnchangedChannelButton = (name, id, currentChannelId, handleSetChannel) => (
-  <Button variant={id === currentChannelId ? 'secondary' : ''} className="w-100 rounded-0 text-start" onClick={() => handleSetChannel(id)}>
+  <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 rounded-0 text-start" onClick={() => handleSetChannel(id)}>
     <span className="me-1">#</span>
     {name}
   </Button>
@@ -20,12 +20,12 @@ const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, disp
 
   return (
     <Dropdown className="d-flex" as={ButtonGroup}>
-      <Button variant={id === currentChannelId ? 'secondary' : ''} className="w-100 rounded-0 text-start text-truncate" onClick={() => handleSetChannel(id)}>
+      <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 rounded-0 text-start text-truncate" onClick={() => handleSetChannel(id)}>
         <span className="me-1">#</span>
         {name}
       </Button>
 
-      <Dropdown.Toggle split variant={id === currentChannelId ? 'secondary' : ''} id="react-aria5875383625-1" />
+      <Dropdown.Toggle split variant={id === currentChannelId ? 'primary' : ''} id="react-aria5875383625-1" />
 
       <Dropdown.Menu>
         <Dropdown.Item

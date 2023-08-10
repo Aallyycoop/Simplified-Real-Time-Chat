@@ -1,0 +1,23 @@
+.user-message {
+  width: fit-content;
+  margin-left: auto;
+  padding: 3px 8px;
+  background-color: #0d6efd;
+  border-radius: 5px;
+  color: white;
+}
+
+.message {
+  width: fit-content;
+  padding: 3px 8px;
+  background-color: #73abff;
+  border-radius: 5px;
+  color: white;
+}
+
+#messages-box {
+  /* background-image: url('../../assets/chat background.jpg');
+  background-size: cover; */
+  background: linear-gradient(45deg, #d2e4ff 10%, #e8f1fe 80%);
+  border-radius: 0 0 20px 20px;
+}
