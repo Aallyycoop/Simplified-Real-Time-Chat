@@ -45,8 +45,15 @@ const Rename = () => {
   // ? не срабатывает селект на содержимом внутри инпута
   // при открытии модального окна переименовать
   const inputRef = useRef();
+
+  // useEffect(() => {
+  //   inputRef.current.select();
+  // }, []);
+
   useEffect(() => {
-    inputRef.current.select();
+    setTimeout(() => {
+      inputRef.current.select();
+    }, 0);
   }, []);
 
   return (
