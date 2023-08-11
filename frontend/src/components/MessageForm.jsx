@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { useSocket, useAuth } from '../hooks';
 
 const messageSchema = yup.object().shape({
-  message: yup.string().trim().min(1),
+  body: yup.string().trim().min(1),
 });
 
 const MessageForm = () => {
@@ -27,14 +27,14 @@ const MessageForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      message: '',
+      body: '',
     },
     validationSchema: messageSchema,
-    onSubmit: ({ message }) => {
+    onSubmit: ({ body }) => {
       try {
         const russianProfanity = filter.getDictionary('ru');
         filter.add(russianProfanity);
-        const preparedMessage = filter.clean(message);
+        const preparedMessage = filter.clean(body);
 
         socketApi.sendMessage({
           message: preparedMessage,
@@ -53,15 +53,15 @@ const MessageForm = () => {
       <Form.Group className="input-group has-validation">
         <Form.Control
           onChange={formik.handleChange}
-          value={formik.values.message}
+          value={formik.values.body}
           className="border-0 p-0 ps-2"
           placeholder={t('messages.enterMessage')}
-          name="message"
+          name="body"
           aria-label={t('messages.newMessage')}
           ref={inputRef}
           autoComplete="off"
         />
-        <Button type="submit" className="border-0" variant="group-vertical" disabled={formik.values.message === formik.initialValues.message || formik.isSubmitting}>
+        <Button type="submit" className="border-0" variant="group-vertical" disabled={formik.values.body === formik.initialValues.body || formik.isSubmitting}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
