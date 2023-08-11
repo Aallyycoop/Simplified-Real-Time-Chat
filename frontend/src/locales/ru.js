@@ -33,6 +33,7 @@ export default {
       add: 'Добавить канал',
       name: 'Имя канала',
       aUSure: 'Уверены?',
+      control: 'Управление каналом',
     },
     messages: {
       enterMessage: 'Введите сообщение...',
