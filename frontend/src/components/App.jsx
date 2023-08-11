@@ -77,7 +77,7 @@ const rollbarConfig = {
 console.log('token', process.env.REACT_APP_ROLLBAR_TOKEN);
 
 const App = () => {
-  const socket = io('ws://localhost:3000');
+  const socket = io();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -122,7 +122,7 @@ const App = () => {
   });
 
   const sendMessage = useCallback((...args) => new Promise((resolve, reject) => {
-    socket.timeout(1000).emit('newMessage', ...args, (err) => {
+    socket.timeout(5000).emit('newMessage', ...args, (err) => {
       /* eslint-disable-next-line */
       if (err) {
         reject(err);
