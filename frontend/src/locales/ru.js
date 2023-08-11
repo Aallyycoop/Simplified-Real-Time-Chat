@@ -51,7 +51,7 @@ export default {
       connectionError: 'Ошибка соединения',
       channelCreate: 'Канал создан',
       channelRename: 'Канал переименован',
-      channelDelete: 'Канал удален',
+      channelDelete: 'Канал удалён',
     },
     send: 'Отправить',
     cancel: 'Отменить',
