@@ -77,7 +77,7 @@ const Rename = () => {
                 isInvalid={(formik.errors.name && formik.touched.name)}
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
-              <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
+              <Form.Label htmlFor="name" visuallyHidden>{t('channels.name')}</Form.Label>
             </Form.Group>
             <div className="d-flex justify-content-end">
               <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
