@@ -61,7 +61,7 @@ const MessageForm = () => {
           ref={inputRef}
           autoComplete="off"
         />
-        <Button type="submit" className="btn-group-vertical border-0" variant="group-vertical" disabled={formik.values.message === formik.initialValues.message}>
+        <Button type="submit" className="border-0" variant="group-vertical" disabled={formik.values.message === formik.initialValues.message}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
