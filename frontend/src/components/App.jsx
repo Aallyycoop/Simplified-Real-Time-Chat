@@ -122,7 +122,7 @@ const App = () => {
   });
 
   const sendMessage = useCallback((...args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('newMessage', ...args, (err) => {
+    socket.timeout(1000).emit('newMessage', ...args, (err) => {
       /* eslint-disable-next-line */
       if (err) {
         reject(err);

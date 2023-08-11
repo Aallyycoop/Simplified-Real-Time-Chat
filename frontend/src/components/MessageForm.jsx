@@ -30,13 +30,13 @@ const MessageForm = () => {
       body: '',
     },
     validationSchema: messageSchema,
-    onSubmit: ({ body }) => {
+    onSubmit: async ({ body }) => {
       try {
         const russianProfanity = filter.getDictionary('ru');
         filter.add(russianProfanity);
         const preparedMessage = filter.clean(body);
 
-        socketApi.sendMessage({
+        await socketApi.sendMessage({
           message: preparedMessage,
           channelId: currentChannelId,
           user: user.username,
