@@ -30,13 +30,13 @@ const MessageForm = () => {
       message: '',
     },
     validationSchema: messageSchema,
-    onSubmit: async ({ message }) => {
+    onSubmit: ({ message }) => {
       try {
         const russianProfanity = filter.getDictionary('ru');
         filter.add(russianProfanity);
         const preparedMessage = filter.clean(message);
 
-        await socketApi.sendMessage({
+        socketApi.sendMessage({
           message: preparedMessage,
           channelId: currentChannelId,
           user: user.username,
@@ -61,7 +61,7 @@ const MessageForm = () => {
           ref={inputRef}
           autoComplete="off"
         />
-        <Button type="submit" variant="group-vertical" disabled={formik.values.message === formik.initialValues.message}>
+        <Button type="submit" className="border-0" variant="group-vertical" disabled={formik.values.message === formik.initialValues.message || formik.isSubmitting}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
