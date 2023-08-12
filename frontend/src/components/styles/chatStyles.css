@@ -28,3 +28,12 @@
 .form-control:focus {
   box-shadow: 1px 1px 6px 0px #0d6efd;
 }
+
+.chat-box .form-control,
+.dropdown-menu {
+  background-color: #e8f1fe;
+}
+
+.dropdown-item:hover {
+  background-color: #a3aab591;
+}

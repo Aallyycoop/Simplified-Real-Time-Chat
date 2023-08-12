@@ -79,7 +79,7 @@ const Rename = () => {
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
               <Form.Label htmlFor="name" visuallyHidden>{t('channels.name')}</Form.Label>
             </Form.Group>
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-end mt-3">
               <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
               <Button type="submit" variant="primary">{t('send')}</Button>
             </div>

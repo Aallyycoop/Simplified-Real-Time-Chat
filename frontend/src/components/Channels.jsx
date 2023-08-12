@@ -9,7 +9,7 @@ import { actions as modalActions } from '../slices/modalSlices';
 import Modal from './modals/Modal.jsx';
 
 const UnchangedChannelButton = (name, id, currentChannelId, handleSetChannel) => (
-  <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 rounded-0 text-start" onClick={() => handleSetChannel(id)}>
+  <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 text-start border-primary" onClick={() => handleSetChannel(id)}>
     <span className="me-1">#</span>
     {name}
   </Button>
@@ -20,23 +20,25 @@ const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, disp
 
   return (
     <Dropdown className="d-flex" as={ButtonGroup}>
-      <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 rounded-0 text-start text-truncate" onClick={() => handleSetChannel(id)}>
+      <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 text-start text-truncate border-primary" onClick={() => handleSetChannel(id)}>
         <span className="me-1">#</span>
         {name}
       </Button>
 
-      <Dropdown.Toggle split variant={id === currentChannelId ? 'primary' : ''} id="react-aria5875383625-1">
+      <Dropdown.Toggle split variant={id === currentChannelId ? 'primary' : ''} id="react-aria5875383625-1" className="border-primary">
         <span className="visually-hidden">{t('channels.control')}</span>
       </Dropdown.Toggle>
 
-      <Dropdown.Menu>
+      <Dropdown.Menu className="p-0">
         <Dropdown.Item
           onClick={() => { dispatch(showModal({ type: 'removing' })); dispatch(setChannelId({ id })); }}
+          className="py-2"
         >
           {t('channels.delete')}
         </Dropdown.Item>
         <Dropdown.Item
           onClick={() => { dispatch(showModal({ type: 'renaming' })); dispatch(setChannelId({ id })); }}
+          className="py-2"
         >
           {t('channels.rename')}
         </Dropdown.Item>
@@ -57,14 +59,14 @@ const Channels = () => {
   const handleSetChannel = (id) => dispatch(setCurrentChannel(id));
 
   return (
-    <Col id="channels-panel" className="bg-color-chat-page col-4 col-md-2 px-0 flex-column h-100 d-flex">
+    <Col className="bg-color-chat-page col-4 col-md-2 px-0 flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('channels.channels')}</b>
         <Modal />
       </div>
       <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map(({ name, id, removable }) => (
-          <li key={id} className="nav-item w-100">
+          <li key={id} className="nav-item w-100 py-1">
             {!removable && UnchangedChannelButton(name, id, currentChannelId, handleSetChannel)}
             {removable
               && ChangedChannelButton(name, id, currentChannelId, handleSetChannel, dispatch, t)}
