@@ -1,0 +1,30 @@
+.user-message {
+  width: fit-content;
+  margin-left: auto;
+  padding: 3px 8px;
+  background-color: #6ca7ff9c;
+  border: 0.5px solid #0d6efd;
+  border-radius: 5px;
+}
+
+.message {
+  width: fit-content;
+  padding: 3px 8px;
+  background-color: #fd5cf830;
+  border: 0.5px solid #fd5cf871;
+  border-radius: 5px;
+}
+
+#messages-box {
+  background: linear-gradient(45deg, #d2e4ff 10%, #e8f1fe 80%);
+  border-right: 0.5px solid #0d6efd;
+}
+
+.bg-color-chat-page {
+  background-color: #6ca7ff9c;
+  border: 0.5px solid #0d6efd;
+}
+
+.form-control:focus {
+  box-shadow: 1px 1px 6px 0px #0d6efd;
+}

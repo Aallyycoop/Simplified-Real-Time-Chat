@@ -10,7 +10,7 @@ import * as yup from 'yup';
 import { toast } from 'react-toastify';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
-import imagePath from '../assets/login img.jpg';
+import imagePath from '../assets/login img.png';
 
 const loginSchema = yup.object({
   username: yup.string().required(),
@@ -72,7 +72,7 @@ const LoginPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="row p-5">
               <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={imagePath} className="rounded-circle" alt={t('loginPage.login')} />
+                <img src={imagePath} className="img-fluid" alt={t('loginPage.login')} />
               </Col>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('loginPage.login')}</h1>

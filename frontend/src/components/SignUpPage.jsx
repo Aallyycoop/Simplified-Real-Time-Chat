@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/index.jsx';
 import routes from '../routes.js';
-import imagePath from '../assets/signup img.jpg';
+import imagePath from '../assets/signup img.png';
 
 const SignUpPage = () => {
   const { t } = useTranslation();
@@ -82,7 +82,7 @@ const SignUpPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <Col className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                <img src={imagePath} className="rounded-circle" alt={t('signUpPage.registration')} />
+                <img src={imagePath} className="img-fluid" alt={t('signUpPage.registration')} />
               </Col>
               <Form className="w-50" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('signUpPage.registration')}</h1>

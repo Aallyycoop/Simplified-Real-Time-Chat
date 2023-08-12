@@ -5,7 +5,7 @@ import {
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
-import './styles/messagesStyle.css';
+import './styles/chatStyles.css';
 
 const Messages = () => {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ const Messages = () => {
   return (
     <Col className="p-0 h-100">
       <div className="d-flex flex-column h-100">
-        <div className="bg-light p-3 shadow-sm small">
+        <div className="bg-color-chat-page p-3 shadow-sm small">
           <p className="m-0">
             <b>{`# ${currentChannelName}`}</b>
           </p>
@@ -46,7 +46,7 @@ const Messages = () => {
             </div>
           ))}
         </div>
-        <div className="mt-auto px-5 py-3">
+        <div className="mt-auto px-5 py-3 bg-color-chat-page">
           <MessageForm />
         </div>
       </div>

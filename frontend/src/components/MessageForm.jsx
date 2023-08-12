@@ -49,7 +49,7 @@ const MessageForm = () => {
   });
 
   return (
-    <Form className="py-1 border rounded-2" noValidate onSubmit={formik.handleSubmit}>
+    <Form className="py-1 border-0 rounded-2" noValidate onSubmit={formik.handleSubmit}>
       <Form.Group className="input-group has-validation">
         <Form.Control
           onChange={formik.handleChange}
