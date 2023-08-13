@@ -5,7 +5,6 @@ import {
 import React, { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
-import './styles/chatStyles.css';
 
 export const scrollToBottom = (element) => {
   element.scrollTo(0, element.scrollHeight);

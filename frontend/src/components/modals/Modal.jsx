@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import getModal from './index.js';
 import { actions as modalActions } from '../../slices/modalSlices';
-import './styles/modalStyles.css';
 
 const renderModal = (modalType) => {
   if (!modalType) {

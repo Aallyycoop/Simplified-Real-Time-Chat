@@ -1,0 +1,84 @@
+@import "~bootstrap/scss/bootstrap";
+@import '~react-toastify/dist/ReactToastify.css';
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* chat-styles */
+
+.user-message {
+  width: fit-content;
+  margin-left: auto;
+  padding: 3px 8px;
+  background-color: #6ca7ff9c;
+  border: 0.5px solid #0d6efd;
+  border-radius: 5px;
+}
+
+.message {
+  width: fit-content;
+  padding: 3px 8px;
+  background-color: #fd5cf830;
+  border: 0.5px solid #fd5cf871;
+  border-radius: 5px;
+}
+
+#messages-box {
+  background: linear-gradient(45deg, #d2e4ff 10%, #e8f1fe 80%);
+  border-right: 0.5px solid #0d6efd;
+}
+
+.bg-color-chat-page {
+  background-color: #6ca7ff9c;
+  border: 0.5px solid #0d6efd;
+}
+
+.form-control:focus {
+  box-shadow: 1px 1px 6px 0px #0d6efd;
+}
+
+.chat-box .form-control,
+.dropdown-menu {
+  background-color: #e8f1fe;
+}
+
+.dropdown-item:hover {
+  background-color: #a3aab591;
+}
+
+/* modal-styles */
+
+.modal-content {
+  background-color: #e8f1fe;
+  border: 0.5px solid #0d6efd;
+  border-radius: 10px;
+}
+
+.modal-header,
+.modal-body {
+  border: none;
+}
+.modal-body .form-control {
+  background: #e8f1fe;
+}
+
+.modal-content .btn-danger {
+  background-color: #ff7979;
+  border: none;
+}
+
+.modal-content .btn-secondary {
+  background-color: #426ba9;
+  border: none;
+}
