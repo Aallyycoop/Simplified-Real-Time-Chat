@@ -7,6 +7,10 @@ import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
 import './styles/chatStyles.css';
 
+export const scrollToBottom = (element) => {
+  element.scrollTo(0, element.scrollHeight);
+};
+
 const Messages = () => {
   const { t } = useTranslation();
   const { messages } = useSelector((state) => state.messages);
@@ -21,10 +25,6 @@ const Messages = () => {
     .filter((message) => message.channelId === currentChannelId);
 
   const messageBox = useRef(null);
-
-  const scrollToBottom = (element) => {
-    element.scrollTo(0, element.scrollHeight);
-  };
 
   useEffect(() => scrollToBottom(messageBox.current), [messagesOfCurrentChannel]);
 

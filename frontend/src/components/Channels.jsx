@@ -3,10 +3,11 @@ import {
   Col, Button, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-
+import { useEffect, useRef } from 'react';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as modalActions } from '../slices/modalSlices';
 import Modal from './modals/Modal.jsx';
+import { scrollToBottom } from './Messages.jsx';
 
 const UnchangedChannelButton = (name, id, currentChannelId, handleSetChannel) => (
   <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 text-start border-primary" onClick={() => handleSetChannel(id)}>
@@ -20,12 +21,12 @@ const ChangedChannelButton = (name, id, currentChannelId, handleSetChannel, disp
 
   return (
     <Dropdown className="d-flex" as={ButtonGroup}>
-      <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 text-start text-truncate border-primary" onClick={() => handleSetChannel(id)}>
+      <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 text-start text-truncate border-primary border-right-0" onClick={() => handleSetChannel(id)}>
         <span className="me-1">#</span>
         {name}
       </Button>
 
-      <Dropdown.Toggle split variant={id === currentChannelId ? 'primary' : ''} id="react-aria5875383625-1" className="border-primary">
+      <Dropdown.Toggle split variant={id === currentChannelId ? 'primary' : ''} id="react-aria5875383625-1" className="border-primary border-left-0">
         <span className="visually-hidden">{t('channels.control')}</span>
       </Dropdown.Toggle>
 
@@ -58,13 +59,17 @@ const Channels = () => {
   const dispatch = useDispatch();
   const handleSetChannel = (id) => dispatch(setCurrentChannel(id));
 
+  const channelsBox = useRef();
+
+  useEffect(() => scrollToBottom(channelsBox.current), [channels]);
+
   return (
     <Col className="bg-color-chat-page col-4 col-md-2 px-0 flex-column h-100 d-flex">
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
         <b>{t('channels.channels')}</b>
         <Modal />
       </div>
-      <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
+      <ul id="channels-box" ref={channelsBox} className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map(({ name, id, removable }) => (
           <li key={id} className="nav-item w-100 py-1">
             {!removable && UnchangedChannelButton(name, id, currentChannelId, handleSetChannel)}
