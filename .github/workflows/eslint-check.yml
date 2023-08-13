@@ -2,10 +2,10 @@ name: eslint-check
 
 on:
   - push
+  - pull_request
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,4 +27,4 @@ jobs:
           CI: true
 
       - name: Run linter
-        run: make lint
+        run: make lint-frontend
