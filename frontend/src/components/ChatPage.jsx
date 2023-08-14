@@ -15,8 +15,15 @@ const ChatPage = () => {
   const token = auth.getToken();
 
   useEffect(() => {
-    dispatch(fetchData(token));
-  }, [dispatch, token]);
+    dispatch(fetchData(token))
+      .unwrap()
+      .catch((error) => {
+        /* eslint-disable-next-line */
+        if (error.message === 'Request failed with status code 500' || error.response.status === 401) {
+          auth.logOut();
+        }
+      });
+  }, [dispatch, token, auth]);
 
   return (
     <div className="chat-box container h-100 my-4 overflow-hidden rounded shadow">
