@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, current } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import fetchData from './fetchData';
 import { actions as channelsActions } from './channelsSlice';
 
