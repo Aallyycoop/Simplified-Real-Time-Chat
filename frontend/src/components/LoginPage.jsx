@@ -54,7 +54,6 @@ const LoginPage = () => {
         /* eslint-disable-next-line */
         if (err.message === 'Network Error') {
           toast.error(t('toast.connectionError'));
-          console.error('error', err);
         }
         /* eslint-disable-next-line */
         if (err.isAxiosError && err.response.status === 401) {

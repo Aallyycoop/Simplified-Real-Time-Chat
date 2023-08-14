@@ -60,7 +60,6 @@ const SignUpPage = () => {
         navigate('/');
       } catch (err) {
         formik.setSubmitting(false);
-        console.error('error', err);
         if (err.response.status === 409) {
           setAuthFailed(true);
           inputRef.current.select();

@@ -27,7 +27,6 @@ const Add = () => {
   const { channels } = useSelector((state) => state.channels);
 
   const channelsNames = channels.map(({ name }) => name);
-  console.log('channelsNames', channelsNames);
 
   const { setCurrentChannel } = channelsActions;
   const { hideModal } = modalActions;

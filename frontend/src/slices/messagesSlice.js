@@ -13,15 +13,12 @@ const messagesSlice = createSlice({
   reducers: {
     addMessage: (state, { payload }) => {
       state.messages.push(payload);
-      console.log('currentMessages', current(state));
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchData.fulfilled, (state, action) => {
         state.messages = action.payload.messages;
-
-        console.log('action.payload', action.payload);
       })
       .addCase(channelsActions.removeChannel, (state, { payload }) => {
         state.messages = state.messages.filter((message) => message.channelId !== payload.id);

@@ -17,7 +17,6 @@ const Modal = () => {
   const { showModal } = modalActions;
 
   const modalType = useSelector((state) => state.modals.type);
-  console.log('modalType', modalType);
 
   return (
     <>

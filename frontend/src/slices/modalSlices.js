@@ -18,7 +18,6 @@ const modalSlices = createSlice({
     },
     setChannelId: (state, { payload }) => {
       state.channelId = payload.id;
-      console.log('channelId', current(state));
     },
   },
 });

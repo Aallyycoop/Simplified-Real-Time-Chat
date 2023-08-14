@@ -20,7 +20,6 @@ import { actions as messagesActions } from '../slices/messagesSlice';
 import { actions as channelsActions } from '../slices/channelsSlice';
 
 const AuthProvider = ({ children }) => {
-  // console.log('localStorage', localStorage);
   const user = JSON.parse(localStorage.getItem('userId'));
 
   const [loggedIn, setLoggedIn] = useState(user && user.token);
@@ -73,8 +72,6 @@ const rollbarConfig = {
   captureUncaught: true,
   captureUnhandledRejections: true,
 };
-
-console.log('token', process.env.REACT_APP_ROLLBAR_TOKEN);
 
 const App = () => {
   const socket = io();
@@ -137,7 +134,6 @@ const App = () => {
       if (err) {
         reject(err);
       }
-      // console.log('response', response);
       resolve(response);
     });
   }), [socket]);

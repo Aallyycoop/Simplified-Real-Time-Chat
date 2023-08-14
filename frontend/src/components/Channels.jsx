@@ -53,8 +53,6 @@ const Channels = () => {
   const { t } = useTranslation();
 
   const { channels, currentChannelId } = useSelector((state) => state.channels);
-  console.log('channels', channels);
-  console.log('currentChannelId', currentChannelId);
 
   const dispatch = useDispatch();
   const handleSetChannel = (id) => dispatch(setCurrentChannel(id));
