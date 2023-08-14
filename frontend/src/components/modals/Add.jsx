@@ -25,7 +25,6 @@ const Add = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channels);
-
   const channelsNames = channels.map(({ name }) => name);
 
   const { setCurrentChannel } = channelsActions;
