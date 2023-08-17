@@ -11,6 +11,7 @@ import NotFoundPage from './NotFoundPage';
 import SignUpPage from './SignUpPage';
 import { AuthContext } from '../contexts/index.jsx';
 import { useAuth } from '../hooks/index.jsx';
+import routes from '../routes';
 
 const AuthProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('userId'));
@@ -73,15 +74,15 @@ const App = () => {
           <Routes>
             <Route path="*" element={<NotFoundPage />} />
             <Route
-              path="/"
+              path={routes.chatPagePath()}
               element={(
                 <PrivateRoute>
                   <ChatPage />
                 </PrivateRoute>
               )}
             />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
+            <Route path={routes.loginPagePath()} element={<LoginPage />} />
+            <Route path={routes.signUpPagePath()} element={<SignUpPage />} />
           </Routes>
           <ToastContainer
             position="top-right"

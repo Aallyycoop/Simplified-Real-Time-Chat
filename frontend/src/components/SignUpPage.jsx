@@ -57,7 +57,7 @@ const SignUpPage = () => {
         localStorage.setItem('userId', JSON.stringify(res.data));
 
         auth.logIn();
-        navigate('/');
+        navigate(routes.signUpPagePath());
       } catch (err) {
         formik.setSubmitting(false);
         if (err.response.status === 409) {
