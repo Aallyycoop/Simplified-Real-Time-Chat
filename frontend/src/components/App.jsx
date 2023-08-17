@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }) => {
   const location = useLocation();
 
   return (
-    auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+    auth.loggedIn ? children : <Navigate to={routes.loginPagePath()} state={{ from: location }} />
   );
 };
 
@@ -40,7 +40,7 @@ const App = () => {
         <div className="d-flex flex-column h-100">
           <Navbar className="shadow-sm" bg="white" expand="lg">
             <div className="container">
-              <Navbar.Brand as={Link} to="/">{t('hexletChat')}</Navbar.Brand>
+              <Navbar.Brand as={Link} to={routes.chatPagePath()}>{t('hexletChat')}</Navbar.Brand>
               <LogOutButton />
             </div>
           </Navbar>
