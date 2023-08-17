@@ -33,8 +33,6 @@ const MessageForm = () => {
     validationSchema: messageSchema,
     onSubmit: async ({ body }) => {
       try {
-        const russianProfanity = filter.getDictionary('ru');
-        filter.add(russianProfanity);
         const preparedMessage = filter.clean(body);
 
         await socketApi.sendMessage({

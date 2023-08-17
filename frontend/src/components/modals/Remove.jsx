@@ -7,6 +7,8 @@ import { actions as modalActions } from '../../slices/modalSlices';
 import { actions as channelsActions } from '../../slices/channelsSlice';
 import { useSocket } from '../../hooks';
 
+const defaultChannelId = 1;
+
 const Remove = () => {
   const socketApi = useSocket();
   const dispatch = useDispatch();
@@ -28,7 +30,7 @@ const Remove = () => {
       dispatch(hideModal());
       /* eslint-disable-next-line */
       if (currentChannelId === channelId) {
-        dispatch(setCurrentChannel(1));
+        dispatch(setCurrentChannel(defaultChannelId));
       }
       toast.success(t('toast.channelDelete'));
     } catch (error) {

@@ -42,13 +42,7 @@ const Rename = () => {
     validateOnChange: false,
   });
 
-  // ? не срабатывает селект на содержимом внутри инпута
-  // при открытии модального окна переименовать
   const inputRef = useRef();
-
-  // useEffect(() => {
-  //   inputRef.current.select();
-  // }, []);
 
   useEffect(() => {
     setTimeout(() => {

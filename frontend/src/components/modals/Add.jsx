@@ -10,9 +10,6 @@ import { actions as channelsActions } from '../../slices/channelsSlice';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
 
-const russianProfanity = filter.getDictionary('ru');
-filter.add(russianProfanity);
-
 export const channelNameValidation = (names, t) => yup.object().shape({
   name: yup.string().trim()
     .required(t('required'))
@@ -25,6 +22,7 @@ const Add = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channels);
+
   const channelsNames = channels.map(({ name }) => name);
 
   const { setCurrentChannel } = channelsActions;

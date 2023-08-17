@@ -1,23 +1,16 @@
-import React, {
-  useState, useEffect, useCallback, useMemo,
-} from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter, Routes, Route, Navigate, useLocation, Link,
 } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Navbar, Button } from 'react-bootstrap';
-import { io } from 'socket.io-client';
-import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
-import { Provider, ErrorBoundary } from '@rollbar/react';
 import ChatPage from './ChatPage';
 import LoginPage from './LoginPage';
 import NotFoundPage from './NotFoundPage';
 import SignUpPage from './SignUpPage';
-import { AuthContext, SocketContext } from '../contexts/index.jsx';
+import { AuthContext } from '../contexts/index.jsx';
 import { useAuth } from '../hooks/index.jsx';
-import { actions as messagesActions } from '../slices/messagesSlice';
-import { actions as channelsActions } from '../slices/channelsSlice';
 
 const AuthProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('userId'));
@@ -34,7 +27,7 @@ const AuthProvider = ({ children }) => {
     if (loggedIn) {
       return user.token;
     }
-    return {};
+    return null;
   };
 
   return (
@@ -64,152 +57,47 @@ const LogOutButton = () => {
   );
 };
 
-const rollbarConfig = {
-  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
-  payload: {
-    environment: 'production',
-  },
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
-
 const App = () => {
-  const socket = io();
-  const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { addMessage } = messagesActions;
-  const { addChannel, renameChannel, removeChannel } = channelsActions;
-
-  useEffect(() => {
-    socket.on('newMessage', (message) => {
-      dispatch(addMessage(message));
-    });
-    return () => {
-      socket.off('newMessage');
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    socket.on('newChannel', (channel) => {
-      dispatch(addChannel(channel));
-    });
-    return () => {
-      socket.off('newChannel');
-    };
-  });
-
-  useEffect(() => {
-    socket.on('renameChannel', (channel) => {
-      dispatch(renameChannel(channel));
-    });
-    return () => {
-      socket.off('renameChannel');
-    };
-  });
-
-  useEffect(() => {
-    socket.on('removeChannel', (channelId) => {
-      dispatch(removeChannel(channelId));
-    });
-    return () => {
-      socket.off('removeChannel');
-    };
-  });
-
-  const sendMessage = useCallback((...args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('newMessage', ...args, (err) => {
-      /* eslint-disable-next-line */
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  }), [socket]);
-
-  const newChannel = useCallback((...args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('newChannel', ...args, (err, response) => {
-      /* eslint-disable-next-line */
-      if (err) {
-        reject(err);
-      }
-      resolve(response);
-    });
-  }), [socket]);
-
-  const renameChan = useCallback((...args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('renameChannel', ...args, (err, response) => {
-      /* eslint-disable-next-line */
-      if (err) {
-        reject(err);
-      }
-      resolve(response);
-    });
-  }), [socket]);
-
-  const removeChan = useCallback((...args) => new Promise((resolve, reject) => {
-    socket.timeout(5000).emit('removeChannel', ...args, (err, response) => {
-      /* eslint-disable-next-line */
-      if (err) {
-        reject(err);
-      }
-      resolve(response);
-    });
-  }), [socket]);
-
-  const socketApi = useMemo(() => (
-    {
-      sendMessage,
-      newChannel,
-      renameChan,
-      removeChan,
-    }), [sendMessage, newChannel, renameChan, removeChan]);
-
   return (
-    <Provider config={rollbarConfig}>
-      <ErrorBoundary>
-        <SocketContext.Provider value={socketApi}>
-          <AuthProvider>
-            <BrowserRouter>
-              <div className="d-flex flex-column h-100">
-                <Navbar className="shadow-sm" bg="white" expand="lg">
-                  <div className="container">
-                    <Navbar.Brand as={Link} to="/">{t('hexletChat')}</Navbar.Brand>
-                    <LogOutButton />
-                  </div>
-                </Navbar>
-                <Routes>
-                  <Route path="*" element={<NotFoundPage />} />
-                  <Route
-                    path="/"
-                    element={(
-                      <PrivateRoute>
-                        <ChatPage />
-                      </PrivateRoute>
-                    )}
-                  />
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/signup" element={<SignUpPage />} />
-                </Routes>
-                <ToastContainer
-                  position="top-right"
-                  autoClose={5000}
-                  hideProgressBar={false}
-                  newestOnTop={false}
-                  closeOnClick
-                  rtl={false}
-                  pauseOnFocusLoss
-                  draggable
-                  pauseOnHover
-                  theme="light"
-                />
-              </div>
-            </BrowserRouter>
-          </AuthProvider>
-        </SocketContext.Provider>
-      </ErrorBoundary>
-    </Provider>
+    <AuthProvider>
+      <BrowserRouter>
+        <div className="d-flex flex-column h-100">
+          <Navbar className="shadow-sm" bg="white" expand="lg">
+            <div className="container">
+              <Navbar.Brand as={Link} to="/">{t('hexletChat')}</Navbar.Brand>
+              <LogOutButton />
+            </div>
+          </Navbar>
+          <Routes>
+            <Route path="*" element={<NotFoundPage />} />
+            <Route
+              path="/"
+              element={(
+                <PrivateRoute>
+                  <ChatPage />
+                </PrivateRoute>
+              )}
+            />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+          </Routes>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+        </div>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
