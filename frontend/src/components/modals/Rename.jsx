@@ -2,12 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { Modal, Form, Button } from 'react-bootstrap';
+import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
-import { channelNameValidation } from './Add';
+// import { channelNameValidation } from './Add';
 
 const Rename = () => {
   const socketApi = useSocket();
@@ -25,17 +26,27 @@ const Rename = () => {
   const russianProfanity = filter.getDictionary('ru');
   filter.add(russianProfanity);
 
+  const channelNameSchema = yup.object().shape({
+    name: yup.string().trim()
+      .required(t('required'))
+      .notOneOf(channelsNames, t('shouldBeUniq')),
+  });
+
   const formik = useFormik({
     initialValues: { name: renamingChannel.name },
-    validationSchema: channelNameValidation(channelsNames, t),
+    validationSchema: channelNameSchema,
     onSubmit: async (values) => {
       try {
         const preparedName = filter.clean(values.name.trim());
+        formik.values.name = preparedName;
+
+        await channelNameSchema.validate({ name: preparedName });
         await socketApi.renameChan({ id: channelId, name: preparedName });
         dispatch(hideModal());
         toast.success(t('toast.channelRename'));
         formik.resetForm();
       } catch (error) {
+        formik.setFieldError('name', error.message);
         console.error(error);
       }
     },
@@ -61,10 +72,9 @@ const Rename = () => {
           <fieldset disabled={formik.isSubmitting}>
             <Form.Group>
               <Form.Control
-                required
                 ref={inputRef}
                 onChange={formik.handleChange}
-                value={formik.errors.name ? filter.clean(formik.values.name) : formik.values.name}
+                value={formik.values.name}
                 name="name"
                 id="name"
                 className="mb-2"

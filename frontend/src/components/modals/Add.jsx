@@ -13,8 +13,7 @@ import { useSocket } from '../../hooks';
 export const channelNameValidation = (names, t) => yup.object().shape({
   name: yup.string().trim()
     .required(t('required'))
-    .notOneOf(names, t('shouldBeUniq'))
-    .transform((value) => filter.clean(value)),
+    .notOneOf(names, t('shouldBeUniq')),
 });
 
 const Add = () => {
@@ -28,18 +27,28 @@ const Add = () => {
   const { setCurrentChannel } = channelsActions;
   const { hideModal } = modalActions;
 
+  const channelNameSchema = yup.object().shape({
+    name: yup.string().trim()
+      .required(t('required'))
+      .notOneOf(channelsNames, t('shouldBeUniq')),
+  });
+
   const formik = useFormik({
     initialValues: { name: '' },
-    validationSchema: channelNameValidation(channelsNames, t),
+    validationSchema: channelNameSchema,
     onSubmit: async (values) => {
       try {
         const preparedName = filter.clean(values.name.trim());
+        formik.values.name = preparedName;
+
+        await channelNameSchema.validate({ name: preparedName });
         const response = await socketApi.newChannel({ name: preparedName });
         dispatch(setCurrentChannel(response.data.id));
         dispatch(hideModal());
         toast.success(t('toast.channelCreate'));
         formik.resetForm();
       } catch (error) {
+        formik.setFieldError('name', error.message);
         console.error(error);
       }
     },
@@ -62,15 +71,14 @@ const Add = () => {
           <fieldset disabled={formik.isSubmitting}>
             <Form.Group>
               <Form.Control
-                required
                 ref={inputRef}
                 onChange={formik.handleChange}
-                value={formik.errors.name ? filter.clean(formik.values.name) : formik.values.name}
+                value={formik.values.name}
                 name="name"
                 placeholder={t('channels.name')}
                 id="name"
                 className="mb-2"
-                isInvalid={(formik.errors.name && formik.touched.name)}
+                isInvalid={(formik.errors && formik.touched.name)}
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
               <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
