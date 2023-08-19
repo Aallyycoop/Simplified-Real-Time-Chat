@@ -20,6 +20,7 @@ code {
 .user-message {
   width: fit-content;
   margin-left: auto;
+  max-width: 60%;
   padding: 3px 8px;
   background-color: #6ca7ff9c;
   border: 0.5px solid #0d6efd;
@@ -28,6 +29,7 @@ code {
 
 .message {
   width: fit-content;
+  max-width: 60%;
   padding: 3px 8px;
   background-color: #fd5cf830;
   border: 0.5px solid #fd5cf871;
@@ -42,6 +44,7 @@ code {
 .bg-color-chat-page {
   background-color: #6ca7ff9c;
   border: 0.5px solid #0d6efd;
+  border-left: none;
 }
 
 .form-control:focus {
