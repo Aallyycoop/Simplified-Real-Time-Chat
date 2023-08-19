@@ -7,7 +7,6 @@ import { useEffect, useRef } from 'react';
 import { actions as channelsActions } from '../slices/channelsSlice';
 import { actions as modalActions } from '../slices/modalSlices';
 import Modal from './modals/Modal.jsx';
-import { scrollToBottom } from './Messages.jsx';
 
 const UnchangedChannelButton = (name, id, currentChannelId, handleSetChannel) => (
   <Button variant={id === currentChannelId ? 'primary' : ''} className="w-100 text-start border-primary" onClick={() => handleSetChannel(id)}>
@@ -59,7 +58,14 @@ const Channels = () => {
 
   const channelsBox = useRef();
 
-  useEffect(() => scrollToBottom(channelsBox.current), [channels]);
+  const activeChannel = useRef();
+
+  useEffect(() => {
+    console.log('scrollIntoView');
+    setTimeout(() => {
+      activeChannel.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
+  }, [channels]);
 
   return (
     <Col className="bg-color-chat-page col-4 col-md-2 px-0 flex-column h-100 d-flex">
@@ -69,7 +75,7 @@ const Channels = () => {
       </div>
       <ul id="channels-box" ref={channelsBox} className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map(({ name, id, removable }) => (
-          <li key={id} className="nav-item w-100 py-1">
+          <li key={id} className="nav-item w-100 py-1" ref={id === currentChannelId ? activeChannel : null}>
             {!removable && UnchangedChannelButton(name, id, currentChannelId, handleSetChannel)}
             {removable
               && ChangedChannelButton(name, id, currentChannelId, handleSetChannel, dispatch, t)}

@@ -10,12 +10,6 @@ import { actions as channelsActions } from '../../slices/channelsSlice';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
 
-export const channelNameValidation = (names, t) => yup.object().shape({
-  name: yup.string().trim()
-    .required(t('required'))
-    .notOneOf(names, t('shouldBeUniq')),
-});
-
 const Add = () => {
   const socketApi = useSocket();
   const dispatch = useDispatch();
@@ -78,7 +72,7 @@ const Add = () => {
                 placeholder={t('channels.name')}
                 id="name"
                 className="mb-2"
-                isInvalid={(formik.errors && formik.touched.name)}
+                isInvalid={(formik.errors.name && formik.touched.name)}
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
               <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>

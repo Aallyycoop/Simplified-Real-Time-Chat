@@ -8,7 +8,6 @@ import { toast } from 'react-toastify';
 import filter from 'leo-profanity';
 import { actions as modalActions } from '../../slices/modalSlices';
 import { useSocket } from '../../hooks';
-// import { channelNameValidation } from './Add';
 
 const Rename = () => {
   const socketApi = useSocket();
