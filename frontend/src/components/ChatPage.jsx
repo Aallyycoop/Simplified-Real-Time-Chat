@@ -19,7 +19,7 @@ const ChatPage = () => {
       .unwrap()
       .catch((error) => {
         /* eslint-disable-next-line */
-        if (error.message === 'Request failed with status code 500' || error.response.status === 401) {
+        if (error.message === 'Request failed with status code 500' || error.message === 'Request failed with status code 401') {
           auth.logOut();
         }
       });
