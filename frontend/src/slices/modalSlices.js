@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   type: null,
   channelId: null,
+  isShown: false,
 };
 
 const modalSlices = createSlice({
@@ -12,9 +13,10 @@ const modalSlices = createSlice({
   reducers: {
     showModal: (state, { payload }) => {
       state.type = payload.type;
+      state.isShown = true;
     },
     hideModal: (state) => {
-      state.type = null;
+      state.isShown = false;
     },
     setChannelId: (state, { payload }) => {
       state.channelId = payload.id;

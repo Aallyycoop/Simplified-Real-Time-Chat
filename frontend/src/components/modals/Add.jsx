@@ -15,6 +15,8 @@ const Add = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channels);
+  const { isShown } = useSelector((state) => state.modals);
+  console.log('isshown', isShown);
 
   const channelsNames = channels.map(({ name }) => name);
 
@@ -56,7 +58,7 @@ const Add = () => {
   }, []);
 
   return (
-    <Modal show centered onHide={() => dispatch(hideModal())}>
+    <Modal show={isShown} centered onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
         <Modal.Title>{t('channels.add')}</Modal.Title>
       </Modal.Header>
@@ -73,6 +75,7 @@ const Add = () => {
                 id="name"
                 className="mb-2"
                 isInvalid={(formik.errors.name && formik.touched.name)}
+                autoFocus
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
               <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
