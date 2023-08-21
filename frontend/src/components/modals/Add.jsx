@@ -58,7 +58,7 @@ const Add = () => {
 
   return (
     <Modal show={isShown} centered onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
-      <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
+      <Modal.Header closeButton onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
         <Modal.Title>{t('channels.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -80,7 +80,7 @@ const Add = () => {
               <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
             </Form.Group>
             <div className="d-flex justify-content-end mt-3">
-              <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
+              <Button onClick={() => { dispatch(hideModal()); formik.resetForm(); }} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
               <Button type="submit" variant="primary">{t('send')}</Button>
             </div>
           </fieldset>
