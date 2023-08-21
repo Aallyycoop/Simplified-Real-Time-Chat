@@ -62,7 +62,7 @@ const Rename = () => {
   }, [isShown]);
 
   return (
-    <Modal show={isShown} centered onHide={() => dispatch(hideModal())}>
+    <Modal show={isShown} centered onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
       <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
         <Modal.Title>{t('channels.renameChannel')}</Modal.Title>
       </Modal.Header>
