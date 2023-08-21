@@ -16,7 +16,6 @@ const Add = () => {
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channels);
   const { isShown } = useSelector((state) => state.modals);
-  console.log('isshown', isShown);
 
   const channelsNames = channels.map(({ name }) => name);
 

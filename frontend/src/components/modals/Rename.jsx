@@ -16,6 +16,7 @@ const Rename = () => {
 
   const { channels } = useSelector((state) => state.channels);
   const { channelId } = useSelector((state) => state.modals);
+  const { isShown } = useSelector((state) => state.modals);
 
   const channelsNames = channels.map(({ name }) => name);
   const renamingChannel = channels.find((channel) => channel.id === channelId);
@@ -58,10 +59,10 @@ const Rename = () => {
     setTimeout(() => {
       inputRef.current.select();
     }, 0);
-  }, []);
+  }, [isShown]);
 
   return (
-    <Modal show centered onHide={() => dispatch(hideModal())}>
+    <Modal show={isShown} centered onHide={() => dispatch(hideModal())}>
       <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
         <Modal.Title>{t('channels.renameChannel')}</Modal.Title>
       </Modal.Header>
