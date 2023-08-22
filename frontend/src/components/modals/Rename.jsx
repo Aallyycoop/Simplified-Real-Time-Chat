@@ -16,7 +16,6 @@ const Rename = () => {
 
   const { channels } = useSelector((state) => state.channels);
   const { channelId } = useSelector((state) => state.modals);
-  const { isShown } = useSelector((state) => state.modals);
 
   const channelsNames = channels.map(({ name }) => name);
   const renamingChannel = channels.find((channel) => channel.id === channelId);
@@ -44,6 +43,7 @@ const Rename = () => {
         await socketApi.renameChan({ id: channelId, name: preparedName });
         dispatch(hideModal());
         toast.success(t('toast.channelRename'));
+        formik.resetForm({ values: { name: '' } });
         formik.resetForm();
       } catch (error) {
         formik.setFieldError('name', error.message);
@@ -59,11 +59,11 @@ const Rename = () => {
     setTimeout(() => {
       inputRef.current.select();
     }, 0);
-  }, [isShown]);
+  }, []);
 
   return (
-    <Modal show={isShown} centered onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
-      <Modal.Header closeButton onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
+    <>
+      <Modal.Header closeButton onHide={() => dispatch(hideModal())}>
         <Modal.Title>{t('channels.renameChannel')}</Modal.Title>
       </Modal.Header>
 
@@ -84,13 +84,13 @@ const Rename = () => {
               <Form.Label htmlFor="name" visuallyHidden>{t('channels.name')}</Form.Label>
             </Form.Group>
             <div className="d-flex justify-content-end mt-3">
-              <Button onClick={() => { dispatch(hideModal()); formik.resetForm(); }} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
+              <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
               <Button type="submit" variant="primary">{t('send')}</Button>
             </div>
           </fieldset>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

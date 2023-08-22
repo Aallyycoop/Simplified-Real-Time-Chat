@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Modal } from 'react-bootstrap';
 import getModal from './index.js';
 import { actions as modalActions } from '../../slices/modalSlices';
 
@@ -8,19 +8,20 @@ const renderModal = (modalType) => {
   if (!modalType) {
     return null;
   }
-  const Component = getModal(modalType);
-  return <Component />;
+  return getModal(modalType);
 };
 
-const Modal = () => {
-  const dispath = useDispatch();
-  const { showModal } = modalActions;
+const ModalWrap = () => {
+  const dispatch = useDispatch();
+  const { showModal, hideModal } = modalActions;
 
-  const modalType = useSelector((state) => state.modals.type);
+  const { type, isShown } = useSelector((state) => state.modals);
+
+  const ModalComponent = renderModal(type);
 
   return (
     <>
-      <Button onClick={() => dispath(showModal({ type: 'adding' }))} className="p-0 text-primary btn-group-vertical" variant="">
+      <Button onClick={() => dispatch(showModal({ type: 'adding' }))} className="p-0 text-primary btn-group-vertical" variant="">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 16 16"
@@ -33,9 +34,11 @@ const Modal = () => {
         </svg>
         <span className="visually-hidden">+</span>
       </Button>
-      {renderModal(modalType)}
+      <Modal show={isShown} centered onHide={() => dispatch(hideModal())}>
+        {type && <ModalComponent />}
+      </Modal>
     </>
   );
 };
 
-export default Modal;
+export default ModalWrap;

@@ -15,7 +15,7 @@ const Add = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const { channels } = useSelector((state) => state.channels);
-  const { isShown } = useSelector((state) => state.modals);
+  // const { isShown } = useSelector((state) => state.modals);
 
   const channelsNames = channels.map(({ name }) => name);
 
@@ -57,8 +57,8 @@ const Add = () => {
   }, []);
 
   return (
-    <Modal show={isShown} centered onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
-      <Modal.Header closeButton onHide={() => { dispatch(hideModal()); formik.resetForm(); }}>
+    <>
+      <Modal.Header closeButton>
         <Modal.Title>{t('channels.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -74,19 +74,18 @@ const Add = () => {
                 id="name"
                 className="mb-2"
                 isInvalid={(formik.errors.name && formik.touched.name)}
-                autoFocus
               />
               <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
               <Form.Label htmlFor="name" hidden>{t('channels.name')}</Form.Label>
             </Form.Group>
             <div className="d-flex justify-content-end mt-3">
-              <Button onClick={() => { dispatch(hideModal()); formik.resetForm(); }} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
+              <Button onClick={() => dispatch(hideModal())} type="button" className="me-2" variant="secondary">{t('cancel')}</Button>
               <Button type="submit" variant="primary">{t('send')}</Button>
             </div>
           </fieldset>
         </Form>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 

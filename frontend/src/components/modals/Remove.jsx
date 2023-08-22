@@ -18,7 +18,6 @@ const Remove = () => {
 
   const { channelId } = useSelector((state) => state.modals);
   const { currentChannelId } = useSelector((state) => state.channels);
-  const { isShown } = useSelector((state) => state.modals);
 
   const { hideModal } = modalActions;
   const { setCurrentChannel } = channelsActions;
@@ -41,7 +40,7 @@ const Remove = () => {
   };
 
   return (
-    <Modal show={isShown} centered onHide={() => dispatch(hideModal())}>
+    <>
       <Modal.Header closeButton>
         <Modal.Title>{t('channels.deleteChannel')}</Modal.Title>
       </Modal.Header>
@@ -53,7 +52,7 @@ const Remove = () => {
           <Button disabled={buttonDisabled} onClick={generateOnSubmit} type="submit" variant="danger">{t('channels.delete')}</Button>
         </div>
       </Modal.Body>
-    </Modal>
+    </>
   );
 };
 
