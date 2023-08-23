@@ -50,24 +50,6 @@ const SocketProvider = ({ socket, children }) => {
       removeChan,
     }), [sendMessage, newChannel, renameChan, removeChan]);
 
-  // const getSocketPromise = useCallback((...args) => new Promise((resolve, reject) => {
-  //   socket.timeout(5000).emit(...args, (err) => {
-  //     /* eslint-disable-next-line */
-  //     if (err) {
-  //       reject(err);
-  //     }
-  //     resolve();
-  //   });
-  // }), [socket]);
-
-  // const socketApi = useMemo(() => (
-  //   {
-  //     sendMessage: (...args) => getSocketPromise('newMessage', ...args),
-  //     newChannel: (...args) => getSocketPromise('newChannel', ...args),
-  //     renameChan: (...args) => getSocketPromise('renameChannel', ...args),
-  //     removeChan: (...args) => getSocketPromise('removeChannel', ...args),
-  //   }), [getSocketPromise]);
-
   return (
     <SocketContext.Provider value={socketApi}>{children}</SocketContext.Provider>
   );
