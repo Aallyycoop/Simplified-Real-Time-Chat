@@ -8,6 +8,9 @@ import { Provider, ErrorBoundary } from '@rollbar/react';
 import App from './components/App.jsx';
 import resources from './locales/index.js';
 import SocketProvider from './contexts/SocketProvider.jsx';
+import { actions as messagesActions } from './slices/messagesSlice';
+import { actions as channelsActions } from './slices/channelsSlice';
+import store from './slices/index.js';
 
 const rollbarConfig = {
   accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
@@ -32,6 +35,27 @@ export default async () => {
 
   const russianProfanity = filter.getDictionary('ru');
   filter.add(russianProfanity);
+
+  const { dispatch } = store;
+
+  const { addMessage } = messagesActions;
+  const { addChannel, renameChannel, removeChannel } = channelsActions;
+
+  socket.on('newMessage', (message) => {
+    dispatch(addMessage(message));
+  });
+
+  socket.on('newChannel', (channel) => {
+    dispatch(addChannel(channel));
+  });
+
+  socket.on('renameChannel', (channel) => {
+    dispatch(renameChannel(channel));
+  });
+
+  socket.on('removeChannel', (channelId) => {
+    dispatch(removeChannel(channelId));
+  });
 
   return (
     <Provider config={rollbarConfig}>

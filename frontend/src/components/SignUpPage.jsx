@@ -54,9 +54,7 @@ const SignUpPage = () => {
           { username: username.toLowerCase(), password, confirmPassword },
         );
 
-        localStorage.setItem('userId', JSON.stringify(res.data));
-
-        auth.logIn();
+        auth.logIn(res.data);
         navigate(routes.chatPagePath());
       } catch (err) {
         formik.setSubmitting(false);

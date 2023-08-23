@@ -6,7 +6,10 @@ const AuthProvider = ({ children }) => {
 
   const [loggedIn, setLoggedIn] = useState(user && user.token);
 
-  const logIn = () => setLoggedIn(true);
+  const logIn = (userData) => {
+    localStorage.setItem('userId', JSON.stringify(userData));
+    setLoggedIn(true);
+  };
   const logOut = () => {
     localStorage.removeItem('userId');
     setLoggedIn(false);

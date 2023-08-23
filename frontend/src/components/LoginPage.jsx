@@ -43,10 +43,8 @@ const LoginPage = () => {
           { username: username.toLowerCase(), password },
         );
 
-        localStorage.setItem('userId', JSON.stringify(res.data));
-
-        auth.logIn();
-        const { from } = location.state || { from: { pathname: '/' } };
+        auth.logIn(res.data);
+        const { from } = location.state || { from: { pathname: routes.chatPagePath } };
         navigate(from);
       } catch (err) {
         formik.setSubmitting(false);
