@@ -20,7 +20,6 @@ const SocketProvider = ({ socket, children }) => {
       removeChan: (...args) => getWrapSocketPromise('removeChannel', ...args),
     }), [getWrapSocketPromise]);
 
-  console.log(socketApi.newChannel({ name: 'nametest' }));
   return (
     <SocketContext.Provider value={socketApi}>{children}</SocketContext.Provider>
   );
